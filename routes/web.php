@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-    Route::get('/shop/{id}','HomeController@shop')->name('shop'); 
+    Route::get('/shop/{id}','HomeController@shop')->name('shop');
 
     Route::get('/dangnhap','UserController@Login')->name('home.login');
     Route::get('/dangky','UserController@Register')->name('home.register');
@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
     Route::POST('/quen-matkhau/layemail','UserController@getemail')->name('home.getemail');
     Route::get('/quen-matkhau/matkhau-moi/{email}','UserController@newpass')->name('home.newpass');
     Route::POST('/quen-matkhau/mkm','UserController@postpasss')->name('home.postpasss');
-    
+
+    Route::POST('/danhgia','ProductController@review')->name('review');
+
     Route::prefix('admin')->group(function () {
         // route User
         Route::get('/doimatkhau/{id}','AdminController@changepass')->name('admin.changepass');
@@ -83,5 +85,5 @@ use Illuminate\Support\Facades\Route;
     Route::POST('/postthanhtoan','HomeController@postthanhtoan')->name('home.postthanhtoan');
     Route::DELETE('/deleteproductuser/{id}','HomeController@delete')->name('home.deleteProduct');
     Route::get('/kiemtradonhang', 'HomeController@mycart')->name('home.mycart');
-    
+
     });

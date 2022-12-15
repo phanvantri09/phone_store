@@ -5,9 +5,37 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\Product\updateRequest;
 use App\Http\Requests\Product\createRequest;
+use App\Models\Review;
+use App\Models\Rate;
+use Illuminate\Support\Facades\Auth;
+
 class ProductController extends Controller
 {
     //
+    public function review(Request $request){
+        // dd($request->all());
+        $id_user = Auth::user()->id;
+        $id_product = $request->id_product;
+        $content = $request->content;
+        $amount = $request->count ? $request->count : null;
+        if(empty($amount) || empty($content)){
+            return back()->with('success','Xem lại có thiếu nọi dung không.');
+        }else{
+            $rate = new Rate;
+            $review = new Review;
+            $rate->id_user = $id_user;
+            $rate->id_product = $id_product;
+            $rate->count = $amount;
+            $rate->save();
+
+            $review->content = $content;
+            $review->id_user = $id_user;
+            $review->id_product = $id_product;
+            $review->count = $amount;
+            $review->save();
+            return back()->with('success','Đánh thành công.');
+        }
+    }
     public function list()
     {
         $data = Product::orderBy('id','DESC')->search()->paginate(10);
@@ -61,11 +89,11 @@ class ProductController extends Controller
             return redirect()->route('admin.listProduct')->with('success','successfully Add.');
         }
     }
-    
+
     public function delete(Product $id)
-    {   
+    {
         $id->delete();
-        return redirect()->route('admin.listProduct')->with('success','Đã xóa sản phẩm');   
+        return redirect()->route('admin.listProduct')->with('success','Đã xóa sản phẩm');
     }
     public function update(updateRequest $request, Product  $id)
     {

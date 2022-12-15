@@ -11,6 +11,11 @@ use App\Models\Blog;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Bill\createRequest;
+
+use App\Models\Review;
+use App\Models\Rate;
+
+
 class HomeController extends Controller
 {
     public function shop($id){
@@ -30,8 +35,8 @@ class HomeController extends Controller
             $data2 = Product::all();
             foreach($cart as $car){
                 if($car->idUser == $idUser && $car->genaral == 1){
-                    $product =Product::find($car->idProduct); 
-                    if(!empty($product)) 
+                    $product =Product::find($car->idProduct);
+                    if(!empty($product))
                     {
                         $total = $total + ($product->price * $car->amount);
                         $amount++;
@@ -51,7 +56,7 @@ class HomeController extends Controller
                 $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
                 if($id==0){
                     $data = Product::orderBy('id','DESC')->search()->paginate(20);
-                    
+
                 }
                 else{
                     $data = Product::where('level','=',$id)->orderBy('id','DESC')->search()->paginate(20);
@@ -73,8 +78,8 @@ class HomeController extends Controller
         $data2 = Product::all();
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
-                $product =Product::find($car->idProduct); 
-                if(!empty($product)) 
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -96,7 +101,7 @@ class HomeController extends Controller
             return view('page.content.home',compact(['data2','data','data1']))->with('success','Successfully');
         }
     }
-   
+
     public function goihang()
     {
         $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
@@ -108,8 +113,8 @@ class HomeController extends Controller
         $data = Product::where('level','=',4)->orderBy('id','DESC')->search()->paginate(20);
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
-                $product =Product::find($car->idProduct); 
-                if(!empty($product)) 
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -139,7 +144,7 @@ class HomeController extends Controller
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
                 $product =Product::find($car->idProduct);
-                if(!empty($product)) 
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -154,7 +159,7 @@ class HomeController extends Controller
         $data = Cart::where('idUser','=',$idUser)->where('genaral','=',1)->get();
         return view('page.content.cart', compact('products','data', 'total','amount'))->with('success','Successfully');
     }
-    // có 3 trạng thái giỏ hàng: 
+    // có 3 trạng thái giỏ hàng:
     // 1 -> đã thêm vào giỏ chờ thanh toán
     // 2 -> đã thanh toán
     // 3 -> trả hàng
@@ -257,8 +262,8 @@ class HomeController extends Controller
             //$data = Product::orderBy('id','DESC')->search()->paginate(20);
             foreach($cart as $car){
                 if($car->idUser == $idUser && $car->genaral == 1){
-                    $product =Product::find($car->idProduct); 
-                    if(!empty($product)) 
+                    $product =Product::find($car->idProduct);
+                    if(!empty($product))
                     {
                         $total = $total + ($product->price * $car->amount);
                         $amount++;
@@ -271,13 +276,14 @@ class HomeController extends Controller
                 }
             }
         }
-        
-        return view("page.content.product", compact('data', 'total','amount'));
+        $reviews = Review::where('id_product', $idProduct)->get();
+        // dd($reviews);
+        return view("page.content.product", compact('data', 'total','amount','reviews'));
     }
     public function delete(Cart $id)
-    {   
+    {
         $id->delete();
-        return redirect()->route('home.cartUser',Auth::user()->id)->with('success','Successfully');   
+        return redirect()->route('home.cartUser',Auth::user()->id)->with('success','Successfully');
     }
     public function pay(){
         $amount = 0;
@@ -287,8 +293,8 @@ class HomeController extends Controller
         $products = Product::all();
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
-                $product =Product::find($car->idProduct); 
-                if(!empty($product)) 
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -319,7 +325,7 @@ class HomeController extends Controller
             //dd($cartUser);
             foreach($cartUser as $car){
                 //$pro = Product::where('id', '=', $car->idProduct)->get();
-                $pro =Product::find($car->idProduct); 
+                $pro =Product::find($car->idProduct);
                 //dd($pro);
                 $pro->amount = $pro->amount - $car->amount;
                 $pro->save();
@@ -338,7 +344,7 @@ class HomeController extends Controller
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
                 $product =Product::find($car->idProduct);
-                if(!empty($product)) 
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -365,8 +371,8 @@ class HomeController extends Controller
         //$data = Product::orderBy('id','DESC')->search()->paginate(20);
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
-                $product =Product::find($car->idProduct); 
-                if(!empty($product)) 
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
@@ -388,8 +394,8 @@ class HomeController extends Controller
         //$data = Product::orderBy('id','DESC')->search()->paginate(20);
         foreach($cart as $car){
             if($car->idUser == $idUser && $car->genaral == 1){
-                $product =Product::find($car->idProduct); 
-                if(!empty($product)) 
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
                 {
                     $total = $total + ($product->price * $car->amount);
                     $amount++;
