@@ -6,32 +6,35 @@
 -->
 <html lang="en">
   <head>
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ustora Demo</title>
-    
+
     <!-- Google Fonts -->
-    
+
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
-    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('./homepage/css/bootstrap.min.css')}}">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('./homepage/css/font-awesome.min.css')}}">
-    
+
     <!-- Custom CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0- 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-
      alpha/css/bootstrap.css" rel="stylesheet">
-	
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" 
+	<link rel="stylesheet" type="text/css"
      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-	
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="{{ asset('./homepage/css/owl.carousel.css')}}">
     <link rel="stylesheet" href="{{ asset('./homepage/style.css')}}">
@@ -67,11 +70,11 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="header-right">
                         <ul class="list-unstyled list-inline">
-                            
+
                             <li class="dropdown dropdown-small">
                                 <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">language :</span><span class="value">English </span><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -84,9 +87,9 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
     </div> <!-- End header area -->
-    
+
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
@@ -95,12 +98,12 @@
                         <h1><a href="{{ route('home') }}"><img src="{{ asset('./homepage/img/logo.png')}}"></a></h1>
                     </div>
                 </div>
-                
+
                 <div class="col-sm-6">
                     <div class="shopping-item">
                         @auth
                         <a href="{{ route('home.cartUser', [Auth::user()->id]) }}">Cart - <span class="cart-amunt">{{$total}} vnđ</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{$amount}}</span></a>
-                        @else 
+                        @else
                         <a href="{{ route('home.register') }}">Cart - <span class="cart-amunt">$0</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
                         @endauth
                     </div>
@@ -108,7 +111,7 @@
             </div>
         </div>
     </div> <!-- End site branding area -->
-    
+
     <div class="mainmenu-area">
         <div class="container">
             <div class="row">
@@ -119,7 +122,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                </div> 
+                </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         @auth
@@ -138,7 +141,7 @@
                             </ul>
                         </li>
                         <li><form style="align-content: center; text-align: center; margin-top: 10px" action=""><input name="search" type="text"><button type="submit"> search</button></form></li>
-                        @else 
+                        @else
                         <li class="active"><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('shop', ['id'=>0]) }}">Shop page</a></li>
                         <li><a href="{{ route('home.login') }}">Cart</a></li>
@@ -155,15 +158,15 @@
                         </li>
                         <li><form style="align-content: center; text-align: center; margin-top: 10px" action=""><input name="search" type="text"><button type="submit"> search</button></form></li>
                         @endauth
-                        
+
                     </ul>
-                </div>  
+                </div>
             </div>
         </div>
     </div> <!-- End mainmenu area -->
-    
+
     @yield('content')
-    
+
     <div class="footer-top-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -180,7 +183,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">User Navigation </h2>
@@ -190,10 +193,10 @@
                             <li><a href="#">Wishlist</a></li>
                             <li><a href="#">Vendor contact</a></li>
                             <li><a href="#">Front page</a></li>
-                        </ul>                        
+                        </ul>
                     </div>
                 </div>
-                
+
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Categories</h2>
@@ -203,10 +206,10 @@
                             <li><a href="#">LED TV</a></li>
                             <li><a href="#">Computer</a></li>
                             <li><a href="#">Gadets</a></li>
-                        </ul>                        
+                        </ul>
                     </div>
                 </div>
-                
+
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-newsletter">
                         <h2 class="footer-wid-title">Newsletter</h2>
@@ -222,7 +225,7 @@
             </div>
         </div>
     </div> <!-- End footer top area -->
-    
+
     <div class="footer-bottom-area">
         <div class="container">
             <div class="row">
@@ -231,7 +234,7 @@
                         <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="http://www.freshdesignweb.com" target="_blank">freshDesignweb.com</a></p>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="footer-card-icon">
                         <i class="fa fa-cc-discover"></i>
@@ -255,20 +258,20 @@
       </script>
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    
+
     <!-- Bootstrap JS form CDN -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    
+
     <!-- jQuery sticky menu -->
     <script src="{{ asset('./homepage/js/owl.carousel.min.js')}}"></script>
     <script src="{{ asset('./homepage/js/jquery.sticky.js')}}"></script>
-    
+
     <!-- jQuery easing -->
     <script src="{{ asset('./homepage/js/jquery.easing.1.3.min.js')}}"></script>
-    
+
     <!-- Main Script -->
     <script src="{{ asset('./homepage/js/main.js')}}"></script>
-    
+
     <!-- Slider -->
     <script src="{{ asset('/viewAdmin/js/action.js')}}"></script>
 

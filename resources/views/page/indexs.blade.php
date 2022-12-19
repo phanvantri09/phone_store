@@ -2,6 +2,7 @@
 <html lang="zxx">
 
 <head>
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="description" content="Ogani Template">
     <meta name="keywords" content="Ogani, unica, creative, html">
@@ -11,6 +12,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{ asset('./homepage/css/bootstrap.min.css')}}" type="text/css">
@@ -73,8 +76,8 @@
                 <a href="{{ route('home.login') }}"><i class="fa fa-user"></i> Đăng nhập</a>
             </div>
         </div>
-        
-        
+
+
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="{{ route('home') }}">Trang chủ</a></li>
@@ -132,12 +135,12 @@
                                 <a href="{{ route('home.logout') }}"> Đăng xuất</a>
                             </div>
 
-                            @else  
+                            @else
                             <div class="header__top__right__auth">
                                 <a href="{{ route('home.login') }}"><i class="fa fa-user"></i> Đăng nhập</a>
                             </div>
                             @endauth
-                            
+
                         </div>
                     </div>
                 </div>

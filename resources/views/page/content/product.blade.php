@@ -79,7 +79,7 @@ $pro = Product::all();
                     </div>
 
 
-                    <div class="related-products-wrapper">
+                    {{-- <div class="related-products-wrapper">
                         <h2 class="related-products-title">Related Products</h2>
                         <div class="related-products-carousel">
                             @foreach ($pro as $p)
@@ -104,12 +104,61 @@ $pro = Product::all();
                             </div>
                             @endforeach
                         </div>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="latest-product">
+                    <h2 class="section-title">Related Products</h2>
+                    <div class="product-carousel">
+                        @auth
+                        @foreach ($dataa as $item)
+                        @if ($item->id != $data->id)
+                        <div class="single-product">
+                            <div class="product-f-image">
+                                <img src="{{ asset("/imgUploads/$item->img1")}}" alt="">
+                                <div class="product-hover">
+                                    <a href="{{ route('home.themcart', [Auth::user()->id,$item->id]) }}" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <a href="{{ route('home.product', $item->id) }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                </div>
+                            </div>
+
+                            <h2><a href="{{ route('home.product', $item->id) }}">{{$item->name}}</a></h2>
+
+                            <div class="product-carousel-price">
+                                <ins>{{$item->price}}</ins>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                        @else
+                        @foreach ($dataa as $item)
+                        <div class="single-product">
+                            <div class="product-f-image">
+                                <img src="{{ asset("/imgUploads/$item->img1")}}" alt="">
+                                <div class="product-hover">
+                                    <a href="{{ route('home.login') }}" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <a href="{{ route('home.product', $item->id) }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                </div>
+                            </div>
+
+                            <h2><a href="{{ route('home.product', $item->id) }}">{{$item->name}}</a></h2>
+
+                            <div class="product-carousel-price">
+                                <ins>{{$item->price}}</ins>
+                            </div>
+                        </div>
+                        @endforeach
+                        @endauth
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 
@@ -196,28 +245,30 @@ $pro = Product::all();
       <div class="container">
 
           <div class="row">
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                   <div class="rating-block">
                       <h4>Average user rating</h4>
-                      <h2 class="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
+                      <h2 class="bold padding-bottom-7">{{$avgCount}}<small>/ 5</small></h2>
+                      @for ($i = 1; $i <= round($avgCount); $i++)
                       <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                       </button>
-                      <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                      </button>
-                      <button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                      </button>
+                      @endfor
+
+                      @for ($i = 1; $i <= (5 - round($avgCount)); $i++)
                       <button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                       </button>
-                      <button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                      </button>
+                      @endfor
+
                   </div>
               </div>
-              <div class="col-sm-3">
+
+
+              {{-- https://bootsnipp.com/snippets/z8aM9 --}}
+
+
+              <div class="col-sm-4">
                   <h4>Rating breakdown</h4>
                   <div class="pull-left">
                       <div class="pull-left" style="width:35px; line-height:1;">
@@ -230,7 +281,7 @@ $pro = Product::all();
                             </div>
                           </div>
                       </div>
-                      <div class="pull-right" style="margin-left:10px;">1</div>
+                      <div class="pull-right" style="margin-left:10px;">{{$review5}}</div>
                   </div>
                   <div class="pull-left">
                       <div class="pull-left" style="width:35px; line-height:1;">
@@ -243,7 +294,7 @@ $pro = Product::all();
                             </div>
                           </div>
                       </div>
-                      <div class="pull-right" style="margin-left:10px;">1</div>
+                      <div class="pull-right" style="margin-left:10px;">{{$review4}}</div>
                   </div>
                   <div class="pull-left">
                       <div class="pull-left" style="width:35px; line-height:1;">
@@ -256,7 +307,7 @@ $pro = Product::all();
                             </div>
                           </div>
                       </div>
-                      <div class="pull-right" style="margin-left:10px;">0</div>
+                      <div class="pull-right" style="margin-left:10px;">{{$review3}}</div>
                   </div>
                   <div class="pull-left">
                       <div class="pull-left" style="width:35px; line-height:1;">
@@ -269,7 +320,7 @@ $pro = Product::all();
                             </div>
                           </div>
                       </div>
-                      <div class="pull-right" style="margin-left:10px;">0</div>
+                      <div class="pull-right" style="margin-left:10px;">{{$review2}}</div>
                   </div>
                   <div class="pull-left">
                       <div class="pull-left" style="width:35px; line-height:1;">
@@ -282,8 +333,14 @@ $pro = Product::all();
                             </div>
                           </div>
                       </div>
-                      <div class="pull-right" style="margin-left:10px;">0</div>
+                      <div class="pull-right" style="margin-left:10px;">{{$review1}}</div>
                   </div>
+              </div>
+              <div class="col-sm-4 bg-success">
+                <a href="{{ route('sosanh', ['id'=>$data->id]) }}">So sánh <b>+</b></a><br>
+                <span>So sánh với các sản phẩm khác</span> <br>
+                <span>xem thông tin sản phẩm</span> <br>
+                <span>Chọn ra sản phẩm ohuf hợp với bạn</span>
               </div>
           </div>
 

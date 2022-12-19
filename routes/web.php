@@ -85,5 +85,8 @@ use Illuminate\Support\Facades\Route;
     Route::POST('/postthanhtoan','HomeController@postthanhtoan')->name('home.postthanhtoan');
     Route::DELETE('/deleteproductuser/{id}','HomeController@delete')->name('home.deleteProduct');
     Route::get('/kiemtradonhang', 'HomeController@mycart')->name('home.mycart');
+    Route::get('/sosanh/{id}', 'HomeController@sosanh')->name('sosanh');
+    Route::post('/filter', 'HomeController@filter')->name('filter');
 
+    Route::get('/search', 'HomeController@search');
     });

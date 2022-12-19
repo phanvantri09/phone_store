@@ -3,6 +3,7 @@
 
 <head>
     <!-- Required meta tags-->
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
@@ -93,7 +94,7 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                     </ul>
                 </div>
             </nav>
@@ -102,7 +103,7 @@
         @auth
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
-            
+
             <div class="logo">
                 <a href="#">
                     <img src="{{ asset('./homepage/img/logo4.png')}}" alt="Cool Admin" />
@@ -150,14 +151,14 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                     </ul>
                 </nav>
             </div>
         </aside>
         @else
         <aside class="menu-sidebar d-none d-lg-block">
-            
+
             <div class="logo">
                 <a href="#">
                     <img src="{{ asset('./homepage/img/logo4.png')}}" alt="Cool Admin" />
@@ -166,7 +167,7 @@
         </div>
     @endauth
         <!-- END MENU SIDEBAR-->
-        
+
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
@@ -181,7 +182,7 @@
                                 </button>
                             </form>
                             <div class="header-button">
-                                
+
                                 <div class="account-wrap">
                                     @auth
                                     <div class="account-item clearfix js-item-menu">
@@ -238,12 +239,12 @@
                                 <div class="alert alert-success">
                                     <strong>Success!</strong> {{Session::get('success')}}
                                 </div>
-                                @endif 
+                                @endif
                                 @if(Session::has('error'))
                                 <div class="alert alert-danger">
                                     <strong>Error!</strong> {{Session::get('error')}}
-                                </div> 
-                                @endif 
+                                </div>
+                                @endif
                                 @auth
                                 <div class="table-responsive table-responsive-data2">
                                     @yield('content')
@@ -252,18 +253,18 @@
                                 <h1>error page</h1>
                                 @endauth
                                 <!-- END DATA TABLE -->
-            
+
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
-        
+
         </div>
     </div>
-    
+
     <!-- Jquery JS-->
-    
+
     <script src="{{ asset('/viewAdmin/vendor/jquery-3.2.1.min.js')}}"></script>
     <!-- Bootstrap JS-->
     <script src="{{ asset('/viewAdmin/vendor/bootstrap-4.1/popper.min.js')}}"></script>
@@ -287,7 +288,7 @@
     <!-- Main JS-->
     <script src="{{ asset('/viewAdmin/js/main.js')}}"></script>
     <script src="{{ asset('/viewAdmin/js/action.js')}}"></script>
-   
+
 </body>
 
 </html>

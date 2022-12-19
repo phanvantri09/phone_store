@@ -14,6 +14,7 @@ use App\Http\Requests\Bill\createRequest;
 
 use App\Models\Review;
 use App\Models\Rate;
+use DB;
 
 
 class HomeController extends Controller
@@ -48,8 +49,103 @@ class HomeController extends Controller
                     }
                 }
             }
+            $category = Category::all();
             //return view('page.content.home', compact(['products']));
-            return view('page.content.shop',compact(['data3','data','data1','data2', 'total','amount','id']))->with('success','Successfully');
+            return view('page.content.shop',compact(['data3','data','data1','data2', 'total','amount','id','category']))->with('success','Successfully');
+            }
+            else{
+                $data2 = Product::all();
+                $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
+                if($id==0){
+                    $data = Product::orderBy('id','DESC')->search()->paginate(20);
+
+                }
+                else{
+                    $data = Product::where('level','=',$id)->orderBy('id','DESC')->search()->paginate(20);
+                }
+                $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
+                return view('page.content.shop',compact(['data2','data','data1','id']))->with('success','Successfully');
+            }
+    }
+    public function filter(Request $request)
+    {
+        // dd($request->all());
+        $id = $request->id;
+        $max = ($request->max) ? $request->max : null;
+        $min = $request->min ? $request->min : null;
+        $sorf = $request->sorf ? $request->sorf : null;
+        $level = $request->level ? $request->level : null;
+        // dd($max);
+        if(!empty(Auth::user()->id)){
+            $amount = 0;
+            $total =0;
+            $idUser = Auth::user()->id;
+            $cart = Cart::where('idUser','=',$idUser)->where('genaral','=',1)->get();
+            if($id==0){
+                $data = Product::orderBy('id','DESC')->search()->paginate(20);
+            }
+            else{
+                if($level){
+                    $data = Product::where('level','=',$level)->search()->paginate(20);
+                    if($max){
+                    $data = Product::where('level','=',$level)->where('price','<',$max)->search()->paginate(20);
+                    }
+                    if($min){
+                        $data = Product::where('level','=',$level)->where('price','>',$min)->search()->paginate(20);
+                    }
+                    if($min && $max){
+                        $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->search()->paginate(20);
+                    }
+                    if($sorf == 2){
+                    $data = Product::where('level','=',$level)->orderBy('id','DESC')->search()->paginate(20);
+                        if($max){
+                            $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('id','DESC')->search()->paginate(20);
+                            }
+                            if($min){
+                                $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('id','DESC')->search()->paginate(20);
+                            }
+                            if($min && $max){
+                                $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('id','DESC')->search()->paginate(20);
+                            }
+                    }
+                    if($sorf == 3){
+                        $data = Product::where('level','=',$level)->orderBy('id','ASC')->search()->paginate(20);
+
+                            if($max){
+                                $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('id','ASC')->search()->paginate(20);
+                                }
+                                if($min){
+                                    $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('id','ASC')->search()->paginate(20);
+                                }
+                                if($min && $max){
+                                    $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('id','ASC')->search()->paginate(20);
+                                }
+                            }
+                }else{
+                    $data = Product::where('level','=',$id)->search()->paginate(20);
+                }
+            }
+            $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
+            $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
+            $data2 = Product::all();
+            foreach($cart as $car){
+                if($car->idUser == $idUser && $car->genaral == 1){
+                    $product =Product::find($car->idProduct);
+                    if(!empty($product))
+                    {
+                        $total = $total + ($product->price * $car->amount);
+                        $amount++;
+                    }
+                    else
+                    {
+                        $total = 0;
+                        $amount = 0;
+                    }
+                }
+            }
+            $category = Category::all();
+            //return view('page.content.home', compact(['products']));
+            return view('page.content.shop',compact(['data3','data','data1','data2', 'total','amount','id','category']))->with('success','Successfully');
             }
             else{
                 $data2 = Product::all();
@@ -251,6 +347,7 @@ class HomeController extends Controller
 
     public function viewProduct($idProduct){
         $data =Product::find($idProduct);
+        //$cate = Category::find($data->id);
         $amount = 0;
         $total =0;
         if(empty(Auth::user()->id)==true){
@@ -276,9 +373,16 @@ class HomeController extends Controller
                 }
             }
         }
+        $dataa = Product::where('level',$data->level)->get();
         $reviews = Review::where('id_product', $idProduct)->get();
-        // dd($reviews);
-        return view("page.content.product", compact('data', 'total','amount','reviews'));
+        $avgCount = Review::where('id_product', $idProduct)->pluck('count')->avg();
+        $review5 = count(Review::where('id_product', $idProduct)->where('count',5)->get());
+        $review4 = count(Review::where('id_product', $idProduct)->where('count',4)->get());
+        $review3 = count(Review::where('id_product', $idProduct)->where('count',3)->get());
+        $review2 = count(Review::where('id_product', $idProduct)->where('count',2)->get());
+        $review1 = count(Review::where('id_product', $idProduct)->where('count',1)->get());
+
+        return view("page.content.product", compact('data', 'total','amount','reviews','dataa','avgCount','review5','review4','review3','review2','review1'));
     }
     public function delete(Cart $id)
     {
@@ -408,5 +512,55 @@ class HomeController extends Controller
             }
         }
         return view("page.content.suatan", compact( 'total','amount'));
+    }
+    public function sosanh($id){
+        $amount = 0;
+        $total =0;
+        $idUser = Auth::user()->id;
+        $cart = Cart::where('idUser','=',$idUser)->where('genaral','=',1)->get();
+        $products = Product::all();
+        foreach($cart as $car){
+            if($car->idUser == $idUser && $car->genaral == 1){
+                $product =Product::find($car->idProduct);
+                if(!empty($product))
+                {
+                    $total = $total + ($product->price * $car->amount);
+                    $amount++;
+                }
+                else
+                {
+                    $total = 0;
+                    $amount = 0;
+                }
+            }
+        }
+        $product = Product::find($id);
+        $producrByCategory = Product::where('level',$product->level)->get();
+        $productAll = Product::all();
+        return view("page.content.sosanh", compact('product', 'producrByCategory','productAll','total','amount'));
+    }
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $pro = DB::table('product')->where('name', 'LIKE', '%' . $request->search . '%')->get();
+            if ($pro) {
+                foreach ($pro as $key => $product1) {
+                    //<img src="{{ asset("/imgUploads/$product->img1")}}" alt="">
+                    $output .= '<tr>
+                    <td> <img src="http://127.0.0.1:8000/imgUploads/'. $product1->img1 .'" alt=""></td>
+                    <td>' . $product1->name . '</td>
+                    <td>' . $product1->price . '</td>
+                    <td>' . $product1->general . '</td>
+                    <td>' . $product1->amount . '</td>
+                    </tr>';
+                }
+            }
+
+            return Response($output);
+        }
+    }
+    public function sosanhby($id, $id_sosanh){
+
     }
 }
