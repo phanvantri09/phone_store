@@ -40,7 +40,7 @@
             <div class="col-md-2" style=" ">
                 <label for="">Type</label>
                 <select name="level" id="level">
-                    <option value=""></option>
+                    <option value="5"></option>
                     @foreach ($category as $ca)
                     <option value="{{ $ca->id}}">{{$ca->name}}</option>
                     @endforeach

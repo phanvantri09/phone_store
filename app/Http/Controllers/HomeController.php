@@ -29,7 +29,7 @@ class HomeController extends Controller
                 $data = Product::orderBy('id','DESC')->search()->paginate(20);
             }
             else{
-                $data = Product::where('level','=',$id)->orderBy('id','DESC')->search()->paginate(4);
+                $data = Product::orderBy('id','DESC')->search()->paginate(4);
             }
             $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
             $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
@@ -61,7 +61,7 @@ class HomeController extends Controller
 
                 }
                 else{
-                    $data = Product::where('level','=',$id)->orderBy('id','DESC')->search()->paginate(20);
+                    $data = Product::orderBy('id','DESC')->search()->paginate(20);
                 }
                 $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
                 return view('page.content.shop',compact(['data2','data','data1','id']))->with('success','Successfully');
@@ -69,20 +69,64 @@ class HomeController extends Controller
     }
     public function filter(Request $request)
     {
-        // dd($request->all());
         $id = $request->id;
         $max = ($request->max) ? $request->max : null;
         $min = $request->min ? $request->min : null;
         $sorf = $request->sorf ? $request->sorf : null;
         $level = $request->level ? $request->level : null;
-        // dd($max);
         if(!empty(Auth::user()->id)){
             $amount = 0;
             $total =0;
             $idUser = Auth::user()->id;
             $cart = Cart::where('idUser','=',$idUser)->where('genaral','=',1)->get();
             if($id==0){
+                if($sorf == 2){
+                    $data = Product::orderBy('price','DESC')->search()->paginate(20);
+                }
+                if($sorf == 3){
+                    $data = Product::orderBy('price','ASC')->search()->paginate(20);
+                }
                 $data = Product::orderBy('id','DESC')->search()->paginate(20);
+                if($level){
+                    $data = Product::search()->paginate(20);
+                    if($max){
+                    $data = Product::where('price','<',$max)->search()->paginate(20);
+                    }
+                    if($min){
+                        $data = Product::where('price','>',$min)->search()->paginate(20);
+                    }
+                    if($min && $max){
+                        $data = Product::where('price','<',$max)->where('price','>',$min)->search()->paginate(20);
+                    }
+                    if($sorf == 2){
+                    $data = Product::orderBy('price','DESC')->search()->paginate(20);
+                        if($max){
+                            $data = Product::where('price','<',$max)->orderBy('price','DESC')->search()->paginate(20);
+                            }
+                            if($min){
+                                $data = Product::where('price','>',$min)->orderBy('price','DESC')->search()->paginate(20);
+                            }
+                            if($min && $max){
+                                $data = Product::where('price','<',$max)->where('price','>',$min)->orderBy('price','DESC')->search()->paginate(20);
+                            }
+                    }
+                    if($sorf == 3){
+
+                        $data = Product::orderBy('price','ASC')->search()->paginate(20);
+
+                            if($max){
+                                $data = Product::where('price','<',$max)->orderBy('price','ASC')->search()->paginate(20);
+                                }
+                                if($min){
+                                    $data = Product::where('price','>',$min)->orderBy('price','ASC')->search()->paginate(20);
+                                }
+                                if($min && $max){
+                                    $data = Product::where('price','<',$max)->where('price','>',$min)->orderBy('price','ASC')->search()->paginate(20);
+                                }
+                            }
+                }else{
+                    $data = Product::search()->paginate(20);
+                }
             }
             else{
                 if($level){
@@ -97,33 +141,37 @@ class HomeController extends Controller
                         $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->search()->paginate(20);
                     }
                     if($sorf == 2){
-                    $data = Product::where('level','=',$level)->orderBy('id','DESC')->search()->paginate(20);
+                        // dd(132);
+                    $data = Product::where('level','=',$level)->orderBy('price','DESC')->search()->paginate(20);
                         if($max){
-                            $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('id','DESC')->search()->paginate(20);
+                            $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('price','DESC')->search()->paginate(20);
                             }
                             if($min){
-                                $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('id','DESC')->search()->paginate(20);
+                                $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('price','DESC')->search()->paginate(20);
                             }
                             if($min && $max){
-                                $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('id','DESC')->search()->paginate(20);
+                                $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('price','DESC')->search()->paginate(20);
                             }
                     }
                     if($sorf == 3){
-                        $data = Product::where('level','=',$level)->orderBy('id','ASC')->search()->paginate(20);
+                        // dd(123);
+
+                        $data = Product::where('level','=',$level)->orderBy('price','ASC')->search()->paginate(20);
 
                             if($max){
-                                $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('id','ASC')->search()->paginate(20);
+                                $data = Product::where('level','=',$level)->where('price','<',$max)->orderBy('price','ASC')->search()->paginate(20);
                                 }
                                 if($min){
-                                    $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('id','ASC')->search()->paginate(20);
+                                    $data = Product::where('level','=',$level)->where('price','>',$min)->orderBy('price','ASC')->search()->paginate(20);
                                 }
                                 if($min && $max){
-                                    $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('id','ASC')->search()->paginate(20);
+                                    $data = Product::where('level','=',$level)->where('price','<',$max)->where('price','>',$min)->orderBy('price','ASC')->search()->paginate(20);
                                 }
                             }
                 }else{
-                    $data = Product::where('level','=',$id)->search()->paginate(20);
+                    $data = Product::search()->paginate(20);
                 }
+
             }
             $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
             $data1 = Blog::orderBy('id','DESC')->search()->paginate(6);
@@ -155,7 +203,7 @@ class HomeController extends Controller
 
                 }
                 else{
-                    $data = Product::where('level','=',$id)->orderBy('id','DESC')->search()->paginate(20);
+                    $data = Product::orderBy('id','DESC')->search()->paginate(20);
                 }
                 $data3 = Product::orderBy('id','DESC')->search()->paginate(4);
                 return view('page.content.shop',compact(['data2','data','data1','id']))->with('success','Successfully');

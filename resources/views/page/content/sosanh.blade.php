@@ -21,7 +21,7 @@ $pro = Product::all();
 <section class="product-details spad">
     <div class="container">
         <div class="row" style="margin-top: 30px; margin-bottom: 30px">
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <div class="product-content-right">
                     <div class="row">
                         <div class="col-sm-12">
@@ -79,34 +79,9 @@ $pro = Product::all();
                     </div>
 
 
-                    {{-- <div class="related-products-wrapper">
-                        <h2 class="related-products-title">Related Products</h2>
-                        <div class="related-products-carousel">
-                            @foreach ($pro as $p)
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="{{ asset("/imgUploads/$p->img1")}}" alt="">
-                                    <div class="product-hover">
-                                        @auth
-                                        <a href="{{ route('home.themcart', [Auth::user()->id,$p->id]) }}" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        @else
-                                        <a href="{{ route('home.login') }}" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        @endauth
-                                        <a href="{{ route('home.product', $p->id) }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                    </div>
-                                </div>
 
-                                <h2><a href="{{ route('home.product', $p->id) }}">{{$p->name}}</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>${{$p->price}}</ins> <del>${{$p->price-100}}</del>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div> --}}
                 </div>
-            </div>
+            </div> --}}
             <div class="col-md-12">
                 {{-- <div class="product-content-right">
                     <div class="related-products-wrapper">
